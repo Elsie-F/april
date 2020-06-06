@@ -1,11 +1,14 @@
 package ru.elsie.april;
 
 public class Seller {
+    private Announcer announcer = new ConsoleAnnouncer();
+    private Assistant assistant = new AssistantImpl();
+
     public void serve(Person person) {
-        System.out.println("Welcome!");
-        System.out.println("What are you interested in?");
+        announcer.announce("Welcome!");
+        assistant.assist();
         sellProduct(person);
-        System.out.println("See you later!");
+        announcer.announce("See you later!");
     }
 
     private void sellProduct(Person person) {
