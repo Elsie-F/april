@@ -5,7 +5,7 @@ import ru.elsie.april.infrastructure.Singleton;
 
 @Singleton
 public class AdvertiserImpl implements Advertiser {
-    @InjectProperty
+    @InjectProperty(value = "chocolate")
     private String product;
 
     @Override
