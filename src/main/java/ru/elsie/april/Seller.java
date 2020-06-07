@@ -1,10 +1,13 @@
 package ru.elsie.april;
 
-import ru.elsie.april.infrastructure.ObjectFactory;
+import ru.elsie.april.infrastructure.InjectByType;
 
 public class Seller {
-    private Announcer announcer = ObjectFactory.getInstance().createObject(Announcer.class);
-    private Assistant assistant = ObjectFactory.getInstance().createObject(Assistant.class);
+
+    @InjectByType
+    private Announcer announcer;
+    @InjectByType
+    private Assistant assistant;
 
     public void serve(Person person) {
         announcer.announce("Welcome!");
