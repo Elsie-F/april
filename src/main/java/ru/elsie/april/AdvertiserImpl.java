@@ -1,7 +1,9 @@
 package ru.elsie.april;
 
 import ru.elsie.april.infrastructure.InjectProperty;
+import ru.elsie.april.infrastructure.Singleton;
 
+@Singleton
 public class AdvertiserImpl implements Advertiser {
     @InjectProperty
     private String product;

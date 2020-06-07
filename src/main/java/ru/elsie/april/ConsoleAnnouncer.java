@@ -1,10 +1,10 @@
 package ru.elsie.april;
 
-import ru.elsie.april.infrastructure.ObjectFactory;
+import ru.elsie.april.infrastructure.InjectByType;
 
 public class ConsoleAnnouncer implements Announcer {
-
-    private Advertiser advertiser = ObjectFactory.getInstance().createObject(Advertiser.class);
+    @InjectByType
+    private Advertiser advertiser;
 
     @Override
     public void announce(String message) {
