@@ -11,12 +11,16 @@ import java.util.List;
 public class ObjectFactory {
     private final ApplicationContext context;
     private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
 
     @SneakyThrows
     public ObjectFactory(ApplicationContext context) {
         this.context = context;
         for (Class<? extends ObjectConfigurator> aClass : context.getConfig().getScanner().getSubTypesOf(ObjectConfigurator.class)) {
             configurators.add(aClass.getDeclaredConstructor().newInstance());
+        }
+        for (Class<? extends ProxyConfigurator> aClass : context.getConfig().getScanner().getSubTypesOf(ProxyConfigurator.class)) {
+            proxyConfigurators.add(aClass.getDeclaredConstructor().newInstance());
         }
     }
 
@@ -29,6 +33,8 @@ public class ObjectFactory {
 
         //фабрика отвечает за вызов init-метода, потому что это продолжение конструктора
         invokeInit(implClass, t);
+
+        t = wrapWithProxy(implClass, t);
 
         return t;
     }
@@ -47,5 +53,12 @@ public class ObjectFactory {
                 method.invoke(t);
             }
         }
+    }
+
+    private <T> T wrapWithProxy(Class<T> implClass, T t) {
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = (T) proxyConfigurator.replaceWithProxyIfNeeded(t, implClass);
+        }
+        return t;
     }
 }

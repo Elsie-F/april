@@ -4,6 +4,7 @@ import ru.elsie.april.infrastructure.InjectProperty;
 import ru.elsie.april.infrastructure.Singleton;
 
 @Singleton
+@Deprecated
 public class AdvertiserImpl implements Advertiser {
     @InjectProperty(value = "chocolate")
     private String product;
