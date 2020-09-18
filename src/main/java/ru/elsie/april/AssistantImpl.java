@@ -11,7 +11,7 @@ public class AssistantImpl implements Assistant {
 
     @PostConstruct
     public void init() {
-        System.out.println(advertiser.getClass());
+        System.out.println("** AssistantImpl uses class " + advertiser.getClass() + " **");
     }
 
     @Override

@@ -10,7 +10,7 @@ public class AdvertiserImpl implements Advertiser {
     private String product;
 
     public AdvertiserImpl() {
-        System.out.println("advertiser was created");
+        System.out.println("** advertiser was created **");
     }
 
     @Override
