@@ -2,6 +2,9 @@ package ru.elsie.april.infrastructure;
 
 import lombok.SneakyThrows;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +23,29 @@ public class ObjectFactory {
     @SneakyThrows
     public <T> T createObject(Class<T> implClass) {
 
-        T t = implClass.getDeclaredConstructor().newInstance();
+        T t = create(implClass);
 
-        configurators.forEach(configurator -> configurator.configure(t, context));
+        configure(t);
+
+        //фабрика отвечает за вызов init-метода, потому что это продолжение конструктора
+        invokeInit(implClass, t);
 
         return t;
+    }
+
+    private <T> T create(Class<T> implClass) throws InstantiationException, IllegalAccessException, java.lang.reflect.InvocationTargetException, NoSuchMethodException {
+        return implClass.getDeclaredConstructor().newInstance();
+    }
+
+    private <T> void configure(T t) {
+        configurators.forEach(configurator -> configurator.configure(t, context));
+    }
+
+    private <T> void invokeInit(Class<T> implClass, T t) throws IllegalAccessException, InvocationTargetException {
+        for (Method method : implClass.getMethods()) {
+            if (method.isAnnotationPresent(PostConstruct.class)) {
+                method.invoke(t);
+            }
+        }
     }
 }
