@@ -2,6 +2,7 @@ package ru.elsie.april;
 
 import ru.elsie.april.infrastructure.InjectByType;
 
+@Deprecated
 public class Seller {
 
     @InjectByType
